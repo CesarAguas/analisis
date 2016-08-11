@@ -1,0 +1,29 @@
+################
+# vamos a crear una pequeña base de datos###
+
+### 4 variabes
+ #nombre
+#edad
+#sexo
+#tipo de educacion
+
+nombres <- c("sergio","irenka", "diego", "memo", "mago", 
+             "cesar", "orlas", "saúl")
+edad <- c(36, 20, 21, 24, 50, 21, 20, 18)
+sexo <- c("hombre", "mujer", "hombre", "hombre", "mujer", 
+          "hombre", "hombre", "hombre")
+teduca <- c("publica", "publica", "publica", "publica",
+            "publica", "publica", "publica", "publica")
+# creamos una matriz
+base1 <- matrix(c(edad, nombres, sexo, teduca))
+
+base1.1 <- data.frame(nombres, edad, sexo, teduca)
+#utilizaremos la funcio table para conocer la frecuencia
+#de las diferentes variables
+table(base1.1$edad)#simbolo de pésos las ruta
+table(base1.1$sexo)
+table(base1.1$teduca)
+attach(base1.1) #solo trabajaremos con la base de datos nombrada
+table(edad)
+detach(base1.1) #cerrar el attach
+summary(base1.1$edad) #estadistica descriptiva
