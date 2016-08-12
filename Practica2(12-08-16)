@@ -1,0 +1,48 @@
+#practica dos
+#Liumpiar el entorno de trabajo 
+ 
+setwd("C://Users//SALA-C26//Desktop")
+install.packages("foreign")
+require (foreign)
+SDEMT215<-data.frame(read.dbf("SDEMT215.dbf"))
+View(sdemt215)
+install.packages("questionr")
+require(questionr)
+wtd.table(SDEMT215$POS_OCU)
+wtd.table(SDEMT215$POS_OCU,na.show = TRUE)
+
+
+#1.2 FRECUENCIA CON DATYOS PONDERADOS
+
+wtd.table(SDEMT215$POS_OCU,weights=SDEMT215$FAC,na.show = TRUE)
+
+#2.1 TABULADOS CON DATOS MUESTRALES (SIN PONDERAR)
+
+wtd.table(SDEMT215$SEX,SDEMT215$POS_OCU)
+
+#2.2 TABULADOS CON DATOD PONDERADOS
+
+wtd.table(SDEMT215$SEX,SDEMT215$POS_OCU,weights = SDEMT215$FAC)
+
+#1) OBTENER LA FRECUENCIA DE LA VARIABLE CLASE 1 (MUESTRA)
+#2) OBTENER EL TABULADO DE ENTIDAD Y SEXO  (MUESTRAL Y PONDERADO)
+
+wtd.table(SDEMT215$CLASE1)
+
+#2
+#wtd.table(SDEMT215$SEX,SDEMT215$ENT)
+wtd.table(SDEMT215$ENT,SDEMT215$SEX)
+wtd.table(SDEMT215$ENT,SDEMT215$SEX,weights = SDEMT215$FAC)
+
+
+#ETIQUETAR VARIABLES
+
+SDEMT215$SEXO <- factor(SDEMT215$SEX,levels = c(1,2),labels = c("hombre", "mujer"))
+wtd.table(SDEMT215$SEXO)
+wtd.table(SDEMT215$SEX)
+
+
+#3.1 etiquetar otra variable
+
+SDEMT215$OCUPACION <- factor(SDEMT215$POS_OCU,levels = c(1,2,3,4,5),labels = c("Subordinados y remunerados", "Empleadore", "Cuenta propia", "Sin pago", "NE" ))
+wtd.table(SDEMT215$OCUPACION)
