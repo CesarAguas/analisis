@@ -1,0 +1,37 @@
+####practica 08/09/2016
+
+summary(mod1)$cofficients
+est = .9323 + 0.0023*eco
+
+###1) relacion lineal entre la var dependiente y la independiente 
+#relacion positiva
+#por cada peso de ingreso que aumenta el padre o la madre, aumenta la estatura en .0023
+#el error estandar residual es de .0198
+#mide la calidad del modelo
+#generamos intervalos de confianza
+#los IC nos permiten completar ña informacion sobre las estimaciones
+#para calcular IC se utiliza
+confint(mod1, level = .95)
+#interpretacion ...  con la prob del 95% b0 
+#se encuentra en el intervalo (.8542, 1.0105)
+#y B1 se encuentra en el intervalo (.0017, .0029)
+####BONDAD DE AJUSTE ###################################
+#CON LA BONDAD DE AJUSTE VERIFICAMOS LA CALIDAD DEL modelo 
+#al interpretar la variable dependiente para esto se utliza 
+#la tabla anova
+anova(mod1)
+#en este caso la variabilidad explicada del model es .033022 = SSM
+### SE REVISA la SRR  = .0031
+## revisando los valores del summary el estadistico
+#F es mayor a 1 y p-value <.05
+#con estas reviosones se puede mencionar que se rechaza la hipotesis nuila de F=1
+#y se puede establecer un modelo
+
+summary(mod1)
+#### revisar R2 multiple
+#al rededor del 91% de la variablididad de la estrucrura
+#es explicada por la recta ajustada
+base1 <- data.frame(eco,est)
+base1$fitted.mod1 <- fitted(mod1) 
+base1$residuals.mod1 <- residuals(mod1)
+base1$rstudent.mod1 <- rstudent(mod1)
