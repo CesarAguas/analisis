@@ -1,0 +1,72 @@
+library(foreign)
+install.packages("questionr")
+require (questionr)
+file.choose()
+dataset = read.spss("C:\\Users\\SALA-C18\\Desktop\\solo.sav", to.data.frame=TRUE)
+
+wtd.table(dataset$sex, weights = dataset$fac_mti)
+
+wtd.table(dataset$eda, weights = dataset$fac_mti)
+
+no <- subset(dataset, dataset$c_ocu=="ocupado")
+
+##################### recodificar #################
+
+install.packages("plyr")
+library (plyr)
+
+dataset$t_per <- revalue(factor(dataset$t_per), c("4"=NA))
+dataset$t_per <- revalue(factor(dataset$t_per), c("0"=NA))
+
+table (dataset$t_per)
+
+##### variables dependientes 
+#################################################
+# sex+eda1+asis+sex_jefe+escol+t_apo1+ocu_jerfe
+
+table(dataset$sex)
+
+### edad recodificada
+dataset$eda1[as.numeric(dataset$EDA) >= 5 & as.numeric(dataset$EDA)<=9] <- 1
+dataset$eda1[as.numeric(dataset$EDA) >= 10 & as.numeric(dataset$EDA)<=13] <- 2
+dataset$eda1[as.numeric(dataset$EDA) >= 14 & as.numeric(dataset$EDA)<=17] <- 3
+dataset$eda1 <- factor(dataset$eda1,levels = c(1,2,3),labels = c("5 a 9 años", "10 a 13 años", "14 a 17 años"))
+
+table(dataset$eda1)
+
+### asis
+
+table(dataset$asis)
+
+### sexjefe
+
+table(dataset$sex_jefe)
+
+###t_apo
+
+table(dataset$t_apo1)
+
+### escol
+dataset$escol_jefe <- revalue(factor(dataset$escol_jefe), c("No especificado"=NA))
+table(dataset$escol_jefe)
+
+dataset$t_per1 <- factor(dataset$t_per,levels = c(1,2,3),labels = c("Es un familiar", "No es un familiar", "Trabaja solo o por su cuenta"))
+
+table(dataset$t_per1)
+wtd.table(dataset$t_per1, weights = dataset$fac_mti)
+
+############################################## modelo de regresion logistica ##########
+
+library (nnet)
+mod1 <- multinom(t_per1~1, data=dataset)
+modfin <- multinom(t_per1~sex + eda1+ asis+ sex_jefe + escol_jefe+ t_apo1 + ocu_jefe, data=dataset)
+
+w <- summary(modfin, Wald=T)
+print(w)
+
+########## tabla en Latex # ### # # # ## #
+
+install.packages("stargazer")
+library (stargazer)
+s <- stargazer(modfin, type = "html", title = "coeficientes", summary = T)
+stargazer(modfin, type = "text", title = "mlogit", digits = 2, out = "C:\\Users\\SALA-C18\\Downloads\\hechoenmexico.txt")
